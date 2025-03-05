@@ -1,0 +1,77 @@
+.settings-panel {
+    width: 300px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.settings-panel label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.settings-panel input[type="file"] {
+    display: block;
+    margin-bottom: 16px;
+}
+
+.settings-panel input[type="number"],
+.settings-panel input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.bed-files-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.add-bed-file-btn {
+    margin-left: 0.5rem;
+}
+
+.bed-file-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.remove-bed-file-btn {
+    margin-left: auto;
+    padding: 0.2rem 0.5rem;
+}
+
+.bed-file-upload {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.persistent-tooltip {
+    pointer-events: auto !important;
+  }
+  
+  .custom-tooltip {
+    max-width: 400px;
+    background-color: #000;
+    color: #fff;
+    text-align: left;
+    border-radius: 0.25rem;
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .custom-tooltip pre {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 8px;
+  }

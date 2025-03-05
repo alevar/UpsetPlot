@@ -1,0 +1,15 @@
+SetA	120
+SetB	150
+SetC	90
+SetD	75
+SetA,SetB	45
+SetA,SetC	35
+SetA,SetD	25
+SetB,SetC	40
+SetB,SetD	30
+SetC,SetD	20
+SetA,SetB,SetC	15
+SetA,SetB,SetD	10
+SetA,SetC,SetD	8
+SetB,SetC,SetD	12
+SetA,SetB,SetC,SetD	5
