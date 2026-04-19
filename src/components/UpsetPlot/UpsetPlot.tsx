@@ -94,15 +94,22 @@ export class UpsetPlot {
 
         // Get data from upsetMatrix
         const sets = this.upsetMatrix.getSets();
-        const intersections = this.upsetMatrix.getIntersections();
+        const intersections = [...this.upsetMatrix.getIntersections()].sort((a, b) => b.value - a.value);
 
         if (!sets || !intersections || sets.length === 0 || intersections.length === 0) {
             return;
         }
 
+        // Dynamic calculations to ensure proper fitting
+        const maxLabelLength = d3.max(sets, d => d.length) || 0;
+        const labelFontSize = Math.min(12, this.dimensions.fontSize,
+            Math.max(8, 14 - maxLabelLength / 4));
+
         // Calculate dimensions with margins to prevent clipping
+        // Increase top margin to accommodate 45-degree angled text
+        const topMargin = Math.max(40, maxLabelLength * labelFontSize * 0.6);
         const margin = {
-            top: 30,
+            top: topMargin,
             right: Math.max(60, this.dimensions.width * 0.1),
             bottom: 10,
             left: Math.max(70, this.dimensions.width * 0.15)
@@ -115,11 +122,6 @@ export class UpsetPlot {
         const container = this.svg
             .append('g')
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
-
-        // Dynamic calculations to ensure proper fitting
-        const maxLabelLength = d3.max(sets, d => d.length) || 0;
-        const labelFontSize = Math.min(12, this.dimensions.fontSize,
-            Math.max(8, 14 - maxLabelLength / 4));
 
         // Calculate section dimensions
         const label_height = Math.max(labelFontSize * 1.5, height * 0.08);
@@ -154,7 +156,7 @@ export class UpsetPlot {
             .style('stroke-width', '1px')
             .style('fill', 'none');
 
-        // Add set labels at the top with rotation if needed
+        // Add set labels at the top with 45-degree rotation to avoid overlap
         const setLabels = container
             .selectAll('text.setLabel')
             .data(sets)
@@ -163,18 +165,11 @@ export class UpsetPlot {
             .attr('class', 'setLabel')
             .attr('x', (d, i) => i * cell_width + cell_width / 2)
             .attr('y', label_height - 5)
-            .attr('text-anchor', 'middle')
+            .attr('text-anchor', 'start')
             .attr('font-size', labelFontSize)
-            .text(d => d);
-
-        // If labels overlap, rotate them
-        if (cell_width < 20 && sets.length > 5) {
-            setLabels
-                .attr('text-anchor', 'end')
-                .attr('transform', (d, i) =>
-                    `rotate(-45, ${i * cell_width + cell_width / 2}, ${label_height - 5})`)
-                .attr('y', label_height - 2);
-        }
+            .text(d => d)
+            .attr('transform', (d, i) =>
+                `rotate(-45, ${i * cell_width + cell_width / 2}, ${label_height - 5})`);
 
         // Create a group for each intersection row
         const gridGroups = container
@@ -282,6 +277,23 @@ export class UpsetPlot {
             .attr('class', 'x-axis')
             .attr('transform', `translate(0, ${bar_y})`)
             .call(xAxis);
+
+        // Calculate total selected items
+        const totalSelectedSum = intersections
+            .filter(d => this.selectedIntersections.includes(d.set))
+            .reduce((sum, d) => sum + d.value, 0);
+
+        // Render counter text
+        container
+            .append('text')
+            .attr('class', 'selectionCounter')
+            .attr('x', width)
+            .attr('y', -5)
+            .attr('text-anchor', 'end')
+            .attr('font-size', Math.max(14, labelFontSize * 1.2))
+            .style('fill', '#FF6F00')
+            .style('font-weight', 'bold')
+            .text(totalSelectedSum > 0 ? `Total Selected: ${d3.format(",")(totalSelectedSum)}` : '');
 
         // Add intersection set labels (left side)
         container
