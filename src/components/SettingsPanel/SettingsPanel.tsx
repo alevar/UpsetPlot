@@ -14,6 +14,8 @@ interface SettingsPanelProps {
     onHeightChange: (value: number) => void;
     sortBy: 'input' | 'count';
     onSortByChange: (value: 'input' | 'count') => void;
+    hideEmpty: boolean;
+    onHideEmptyChange: (value: boolean) => void;
 }
 
 const SettingsPanel: React.FC<SettingsPanelProps> = ({
@@ -27,6 +29,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
     onHeightChange,
     sortBy,
     onSortByChange,
+    hideEmpty,
+    onHideEmptyChange,
 }) => {
     // Help tooltip content for each file type
     const tooltips = {
@@ -140,6 +144,15 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                 <option value="input">Input Order</option>
                                 <option value="count">Count (Frequency)</option>
                             </Form.Select>
+                        </Form.Group>
+
+                        <Form.Group controlId="hideEmpty" className="mb-3">
+                            <Form.Check 
+                                type="switch"
+                                label="Hide Empty Intersections"
+                                checked={hideEmpty}
+                                onChange={(e) => onHideEmptyChange(e.target.checked)}
+                            />
                         </Form.Group>
                     </Form>
                 </Card.Body>

@@ -14,6 +14,7 @@ interface UpsetPlotData {
     upsetMatrix: UpsetMatrixData;
     orientation?: 'horizontal' | 'vertical';
     sortBy?: 'input' | 'count';
+    hideEmpty?: boolean;
 }
 
 export class UpsetPlot {
@@ -21,6 +22,7 @@ export class UpsetPlot {
     private dimensions: Dimensions;
     private upsetMatrix: UpsetMatrixData;
     private sortBy: 'input' | 'count' = 'count';
+    private hideEmpty: boolean = false;
     private selectedIntersections: string[] = [];
     private hoveredIntersection: string | null = null;
     private onIntersectionClick: ((intersection: string) => void) | null = null;
@@ -51,6 +53,7 @@ export class UpsetPlot {
         this.dimensions = data.dimensions;
         this.upsetMatrix = data.upsetMatrix;
         if (data.sortBy) this.sortBy = data.sortBy;
+        if (data.hideEmpty !== undefined) this.hideEmpty = data.hideEmpty;
         this.initTooltip();
     }
 
@@ -99,6 +102,10 @@ export class UpsetPlot {
         const sets = this.upsetMatrix.getSets();
         let intersections = [...this.upsetMatrix.getIntersections()];
         
+        if (this.hideEmpty) {
+            intersections = intersections.filter(i => i.value > 0);
+        }
+
         if (this.sortBy === 'count') {
             intersections.sort((a, b) => b.value - a.value);
         }

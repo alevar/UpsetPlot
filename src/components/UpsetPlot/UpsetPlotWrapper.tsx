@@ -12,6 +12,7 @@ interface UpsetPlotWrapperProps {
     height: number;
     fontSize: number;
     sortBy: 'input' | 'count';
+    hideEmpty: boolean;
 }
 
 const UpsetPlotWrapper: React.FC<UpsetPlotWrapperProps> = ({
@@ -19,7 +20,8 @@ const UpsetPlotWrapper: React.FC<UpsetPlotWrapperProps> = ({
     width, 
     height, 
     fontSize,
-    sortBy
+    sortBy,
+    hideEmpty
 }) => {
     const svgRef = useRef<SVGSVGElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -123,13 +125,14 @@ const UpsetPlotWrapper: React.FC<UpsetPlotWrapperProps> = ({
                     dimensions: upsetPlotDimensions,
                     upsetMatrix: upsetMatrixFile.data,
                     sortBy: sortBy,
+                    hideEmpty: hideEmpty,
                 }
             );
             
             grid.setCellData(0, 0, upsetPlot);
             upsetPlot.plot();
         }
-    }, [upsetMatrixFile, width, height, fontSize, sortBy]);
+    }, [upsetMatrixFile, width, height, fontSize, sortBy, hideEmpty]);
 
     return (
         <div className="plot-container" ref={containerRef}>
