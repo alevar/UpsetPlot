@@ -13,12 +13,14 @@ interface UpsetPlotData {
     dimensions: Dimensions;
     upsetMatrix: UpsetMatrixData;
     orientation?: 'horizontal' | 'vertical';
+    sortBy?: 'input' | 'count';
 }
 
 export class UpsetPlot {
     private svg: d3.Selection<SVGSVGElement, unknown, null, undefined>;
     private dimensions: Dimensions;
     private upsetMatrix: UpsetMatrixData;
+    private sortBy: 'input' | 'count' = 'count';
     private selectedIntersections: string[] = [];
     private hoveredIntersection: string | null = null;
     private onIntersectionClick: ((intersection: string) => void) | null = null;
@@ -48,6 +50,7 @@ export class UpsetPlot {
         this.svg = svg;
         this.dimensions = data.dimensions;
         this.upsetMatrix = data.upsetMatrix;
+        if (data.sortBy) this.sortBy = data.sortBy;
         this.initTooltip();
     }
 
@@ -94,7 +97,11 @@ export class UpsetPlot {
 
         // Get data from upsetMatrix
         const sets = this.upsetMatrix.getSets();
-        const intersections = [...this.upsetMatrix.getIntersections()].sort((a, b) => b.value - a.value);
+        let intersections = [...this.upsetMatrix.getIntersections()];
+        
+        if (this.sortBy === 'count') {
+            intersections.sort((a, b) => b.value - a.value);
+        }
 
         if (!sets || !intersections || sets.length === 0 || intersections.length === 0) {
             return;
@@ -219,8 +226,8 @@ export class UpsetPlot {
                 const isHovered = this.hoveredIntersection === d.intersection.set;
                 const isIncluded = this.upsetMatrix.isSetInIntersection(d.set, d.intersection.set);
                 return isSelected
-                    ? (isIncluded ? '#FF6F00' : '#807A79')
-                    : (isIncluded ? (isHovered ? '#FF9C46' : '#030202') : '#807A79');
+                    ? (isIncluded ? '#FF6F00' : '#E0E0E0')
+                    : (isIncluded ? (isHovered ? '#FF9C46' : '#111111') : '#E0E0E0');
             })
             .style('stroke', 'black');
 
@@ -406,8 +413,8 @@ export class UpsetPlot {
                 const isHovered = this.hoveredIntersection === d.intersection.set;
                 const isIncluded = this.upsetMatrix.isSetInIntersection(d.set, d.intersection.set);
                 return isSelected
-                    ? (isIncluded ? '#FF6F00' : '#807A79')
-                    : (isIncluded ? (isHovered ? '#FF9C46' : '#030202') : '#807A79');
+                    ? (isIncluded ? '#FF6F00' : '#E0E0E0')
+                    : (isIncluded ? (isHovered ? '#FF9C46' : '#111111') : '#E0E0E0');
             });
 
         // Update value bars

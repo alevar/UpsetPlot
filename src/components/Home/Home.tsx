@@ -141,6 +141,7 @@ const Home: React.FC = () => {
     const [fontSize, setFontSize] = useState<number>(16);
     const [width, setWidth] = useState<number>(500);
     const [height, setHeight] = useState<number>(500);
+    const [sortBy, setSortBy] = useState<'input' | 'count'>('count');
     const [errorModalVisible, setErrorModalVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -182,6 +183,8 @@ const Home: React.FC = () => {
                 onWidthChange={setWidth}
                 height={height}
                 onHeightChange={setHeight}
+                sortBy={sortBy}
+                onSortByChange={setSortBy}
             />
 
             <div className="visualization-container">
@@ -190,6 +193,7 @@ const Home: React.FC = () => {
                     width={width}
                     height={height}
                     fontSize={fontSize}
+                    sortBy={sortBy}
                 />
             </div>
 

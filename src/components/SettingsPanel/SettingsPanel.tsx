@@ -12,6 +12,8 @@ interface SettingsPanelProps {
     onWidthChange: (value: number) => void;
     height: number;
     onHeightChange: (value: number) => void;
+    sortBy: 'input' | 'count';
+    onSortByChange: (value: 'input' | 'count') => void;
 }
 
 const SettingsPanel: React.FC<SettingsPanelProps> = ({
@@ -23,6 +25,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
     onWidthChange,
     height,
     onHeightChange,
+    sortBy,
+    onSortByChange,
 }) => {
     // Help tooltip content for each file type
     const tooltips = {
@@ -128,6 +132,14 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                 value={height}
                                 onChange={(e) => onHeightChange(Number(e.target.value))}
                             />
+                        </Form.Group>
+
+                        <Form.Group controlId="sortBy" className="mb-3">
+                            <Form.Label>Sort By</Form.Label>
+                            <Form.Select value={sortBy} onChange={(e) => onSortByChange(e.target.value as any)}>
+                                <option value="input">Input Order</option>
+                                <option value="count">Count (Frequency)</option>
+                            </Form.Select>
                         </Form.Group>
                     </Form>
                 </Card.Body>
