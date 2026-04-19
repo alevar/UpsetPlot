@@ -1,0 +1,16 @@
+SetA,SetB,SetC,SetD,count
+True,False,False,False,120
+False,True,False,False,150
+False,False,True,False,90
+False,False,False,True,75
+True,True,False,False,45
+True,False,True,False,35
+True,False,False,True,25
+False,True,True,False,40
+False,True,False,True,30
+False,False,True,True,20
+True,True,True,False,15
+True,True,False,True,10
+True,False,True,True,8
+False,True,True,True,12
+True,True,True,True,5

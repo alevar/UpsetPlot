@@ -28,11 +28,12 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
     const tooltips = {
         upset_matrix: (
             <Tooltip id="upsetMatrix-tooltip" className="tooltip-hover">
-                <strong>Upset Matrix File Example:</strong>
+                <strong>Upset Matrix File Example (CSV):</strong>
                 <pre style={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>
-                       {'SetA\t120\n'+
-                        'SetB\t150\n'+
-                        'SetA,SetB\t45\n'}
+                       {'SetA,SetB,count\n'+
+                        'True,False,120\n'+
+                        'False,True,150\n'+
+                        'True,True,45\n'}
                 </pre>
                 <div>File containing the matrix to generate the upset plot.</div>
             </Tooltip>
@@ -79,7 +80,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                 <Form.Label className="d-flex align-items-center">
                     {label}
                 </Form.Label>
-                <Form.Control type="file" onChange={onChange} />
+                <Form.Control type="file" accept=".csv" onChange={onChange} />
                 {errorStatus === -1 && (
                     <div className="text-danger">{errorMessage}</div>
                 )}
