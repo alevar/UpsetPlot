@@ -75,3 +75,32 @@
     overflow-y: auto;
     margin-bottom: 8px;
   }
+
+/* ── Copy Link button ──────────────────────────────────────────────────────── */
+.copy-link-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: 1.5px solid #6c757d;
+    border-radius: 6px;
+    background: transparent;
+    color: #495057;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    gap: 0.4rem;
+}
+
+.copy-link-btn:hover {
+    background: #f8f9fa;
+    border-color: #495057;
+    color: #212529;
+}
+
+.copy-link-copied {
+    color: #198754;
+    font-weight: 600;
+}

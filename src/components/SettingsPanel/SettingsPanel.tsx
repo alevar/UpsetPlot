@@ -16,6 +16,11 @@ interface SettingsPanelProps {
     onSortByChange: (value: 'input' | 'count') => void;
     hideEmpty: boolean;
     onHideEmptyChange: (value: boolean) => void;
+    availableSets: string[];
+    selectedSets: string[];
+    onSelectedSetsChange: (sets: string[]) => void;
+    onCopyLink: () => void;
+    copyToast: boolean;
 }
 
 const SettingsPanel: React.FC<SettingsPanelProps> = ({
@@ -31,6 +36,11 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
     onSortByChange,
     hideEmpty,
     onHideEmptyChange,
+    availableSets,
+    selectedSets,
+    onSelectedSetsChange,
+    onCopyLink,
+    copyToast,
 }) => {
     // Help tooltip content for each file type
     const tooltips = {
@@ -153,6 +163,45 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                 checked={hideEmpty}
                                 onChange={(e) => onHideEmptyChange(e.target.checked)}
                             />
+                        </Form.Group>
+
+                        <Form.Group controlId="subsetSelection" className="mb-3">
+                            <Form.Label>Select Sets</Form.Label>
+                            {availableSets.length > 0 ? (
+                                <div className="set-checkbox-container" style={{maxHeight: '150px', overflowY: 'auto', border: '1px solid var(--bs-border-color)', padding: '10px', borderRadius: '4px'}}>
+                                    {availableSets.map((set) => (
+                                        <Form.Check
+                                            key={set}
+                                            type="checkbox"
+                                            id={`set-checkbox-${set}`}
+                                            label={set}
+                                            checked={selectedSets.includes(set)}
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    onSelectedSetsChange([...selectedSets, set]);
+                                                } else {
+                                                    onSelectedSetsChange(selectedSets.filter(s => s !== set));
+                                                }
+                                            }}
+                                        />
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="text-muted small">No sets available</div>
+                            )}
+                        </Form.Group>
+                        <Form.Group className="mb-0 mt-2">
+                            <button
+                                type="button"
+                                className="copy-link-btn"
+                                onClick={onCopyLink}
+                            >
+                                {copyToast ? (
+                                    <span className="copy-link-copied">✓ Copied!</span>
+                                ) : (
+                                    <span>🔗 Copy Link</span>
+                                )}
+                            </button>
                         </Form.Group>
                     </Form>
                 </Card.Body>

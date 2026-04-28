@@ -165,7 +165,7 @@ export class UpsetPlot {
             .attr('x', 0)
             .attr('y', label_height)
             .attr('width', dot_width)
-            .attr('height', dot_height)
+            .attr('height', intersections.length * cell_height)
             .style('stroke', 'black')
             .style('stroke-width', '1px')
             .style('fill', 'none');
